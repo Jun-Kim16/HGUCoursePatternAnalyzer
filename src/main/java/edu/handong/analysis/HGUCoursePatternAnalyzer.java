@@ -1,5 +1,7 @@
 package edu.handong.analysis;
 
+import java.util.Vector;
+
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
 
@@ -41,6 +43,7 @@ public class HGUCoursePatternAnalyzer {
 		}
 		
 		courses = initiateCourseArrayFromLines(lines);
+		
 		System.out.println("Number of All Courses: " + numOfCourses);
 		for(Course course: courses) {
 			System.out.println(course.getCourseName());
@@ -55,10 +58,23 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private Student[] initiateStudentArrayFromLines(String[] lines) {
 		
-		// TODO: implement this method
+		Student[] nameLines = new Student[lines.length];
+		Student[] students = new Student[this.numOfStudents];
 		
+		for(int i=0; i < lines.length; i++) {
+			nameLines[i]= new Student(lines[i].split(",")[1].trim());
+		}
 		
-		return null;
+		int i=0;
+		for(Student name : nameLines) {
+			if(!studentExist(students, name)) {
+				students[i] = name;
+				i++;
+			}
+			if(i==this.numOfStudents)
+				break;
+		}
+		return students;
 	}
 
 	/**
@@ -67,10 +83,14 @@ public class HGUCoursePatternAnalyzer {
 	 * @param student
 	 * @return boolean
 	 */
-	private boolean studentExist(Student[] students, Student student) {
+	private boolean studentExist(Student[] students, Student student){
 		
-		// TODO: implement this method
-
+		Vector<String> vector = new Vector<String>(students.length);
+		for(Student stu : students) {
+			if(stu!=null) vector.addElement(stu.getName());
+		}
+		if(vector.contains(student.getName()))
+			return true;
 		return false;
 	}
 	
@@ -81,9 +101,27 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private Course[] initiateCourseArrayFromLines(String[] lines) {
 		
-		// TODO: implement this method
+		Course[] courseLines = new Course[lines.length];
+		Course[] courses = new Course[this.numOfCourses];
 		
-		return null;
+		for(int i=0; i < lines.length; i++) {
+			courseLines[i]=new Course(lines[i].split(",")[2].trim());
+		}
+		
+		
+		int i=0;
+		for(Course cname : courseLines) {
+			
+			if(!courseExist(courses, cname)) {
+				courses[i] = cname;
+			i++;
+			}
+			
+			if(i==this.numOfCourses)
+				break;
+		}
+
+		return courses;
 	}
 
 	/**
@@ -92,11 +130,14 @@ public class HGUCoursePatternAnalyzer {
 	 * @param course
 	 * @return boolean
 	 */
-	private boolean courseExist(Course[] courses, Course course) {
+	private boolean courseExist(Course[] courses, Course course){
+		Vector<String> vector = new Vector<String>(courses.length);
 		
-		// TODO: implement this method
-
+		for(Course cous : courses) {
+			if(cous!=null) vector.addElement(cous.getCourseName());
+		}
+		if(vector.contains(course.getCourseName()))
+			return true;
 		return false;
 	}
-
 }
